@@ -1,0 +1,20 @@
+--- a/Makefile
++++ b/Makefile
+@@ -2,7 +2,7 @@
+ # Student makefile for Cache Lab
+ # 
+ CC = gcc
+-CFLAGS = -g -Wall -Werror -std=c99
++CFLAGS = -g -Wall -std=c99
+ 
+ all: csim test-trans tracegen
+ 
+@@ -15,7 +15,7 @@ test-trans: test-trans.c trans.o cachelab.c cachelab.h
+ tracegen: tracegen.c trans.o cachelab.c
+ 	$(CC) $(CFLAGS) -O0 -o tracegen tracegen.c trans.o cachelab.c
+ 
+-trans.o: trans.c
++trans.o: trans.c cachelab.h contracts.h
+ 	$(CC) $(CFLAGS) -O0 -c trans.c
+ 
+ handin:

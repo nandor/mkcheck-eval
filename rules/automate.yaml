@@ -1,0 +1,39 @@
+filter_in:
+    - .*\.cpp
+    - .*\.cmake
+    - .*\.cmake.in
+    - .*\.c
+    - .*\.cc
+    - .*\.C
+    - .*\.make
+    - .*\.mk
+    - .*\.marks
+    - .*\.includecache
+    - .*\.check_cache
+    - .*\.pyc
+    - .*/Doxyfile\\.in
+    - .*/CMakeLists.txt
+    - .*/flgas.make
+    - .*/depend.internal
+    - .*/link.txt
+    - .*/Makefile2
+    - .*/Makefile
+    - .*/CMakeCache.txt
+    - .*/feature_tests.cxx
+    - .*/.ninja_deps
+    - .*/.ninja_log"
+filter_tmp:
+    - .*\.output
+    - .*\.includecache
+    - .*\.internal
+    - .*\.make
+    - .*\.a
+    - .*\.o
+    - .*\.so"
+filter_out:
+    - .*\.internal
+    - .*\.includecache
+    - .*\.make
+    - .*swig.*
+    - .*doxygen.*
+    - .*INFO.*

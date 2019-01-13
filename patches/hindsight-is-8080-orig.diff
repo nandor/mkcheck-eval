@@ -1,0 +1,11 @@
+--- a/make/variables.mk
++++ b/make/variables.mk
+@@ -1,7 +1,7 @@
+ SHELL := /bin/bash
+ CXX := g++
+ CC := gcc
+-COMMON_FLAGS := -pedantic-errors -Wall -Wextra -Werror -march=native -MMD -MP -Isrc/
++COMMON_FLAGS := -pedantic-errors -Wall -Wextra -march=native -MMD -MP -Isrc/
+ CXXFLAGS := -std=gnu++17 $(COMMON_FLAGS)
+ CFLAGS := -std=gnu11 $(COMMON_FLAGS)
+ 

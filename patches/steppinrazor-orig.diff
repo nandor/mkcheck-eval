@@ -1,0 +1,15 @@
+--- a/SConstruct
++++ b/SConstruct
+@@ -1 +1 @@
+-SConscript(['src/SConstruct', 'tests/SConstruct'])
++SConscript(['src/SConstruct'])
+--- a/tools/offset_gen.rb
++++ b/tools/offset_gen.rb
+@@ -6,6 +6,7 @@ end
+ @input_files = ARGV
+ 
+ puts "# include <stdio.h>"
++puts "# include <stddef.h>"
+ puts
+ 
+ @input_files.each do |f|

@@ -1,0 +1,34 @@
+diff --git a/data/CMakeLists.txt b/data/CMakeLists.txt
+index db1a3b0..97e914f 100644
+--- a/data/CMakeLists.txt
++++ b/data/CMakeLists.txt
+@@ -4,25 +4,25 @@ add_custom_command(OUTPUT interface.c
+ 	COMMAND ${PYTHON_EXECUTABLE} ${TOOLS_DIR}/createtiles.py interface
+ 	${CMAKE_SOURCE_DIR}/data/interface.bmp
+ 	${CMAKE_CURRENT_BINARY_DIR}/interface.c
+-	DEPENDS interface.bmp)
++	DEPENDS interface.bmp ${TOOLS_DIR}/createtiles.py)
+ 
+ add_custom_command(OUTPUT blocks.c
+ 	COMMAND ${PYTHON_EXECUTABLE} ${TOOLS_DIR}/createtiles.py blocks
+ 	${CMAKE_SOURCE_DIR}/data/blocks.bmp
+ 	${CMAKE_CURRENT_BINARY_DIR}/blocks.c
+-	DEPENDS blocks.bmp)
++	DEPENDS blocks.bmp ${TOOLS_DIR}/createtiles.py)
+ 
+ add_custom_command(OUTPUT text.c
+ 	COMMAND ${PYTHON_EXECUTABLE} ${TOOLS_DIR}/createtiles.py text
+ 	${CMAKE_SOURCE_DIR}/data/text.bmp
+ 	${CMAKE_CURRENT_BINARY_DIR}/text.c
+-	DEPENDS text.bmp)
++	DEPENDS text.bmp ${TOOLS_DIR}/createtiles.py)
+ 
+ add_custom_command(OUTPUT numbers.c
+ 	COMMAND ${PYTHON_EXECUTABLE} ${TOOLS_DIR}/createfont.py numbers
+ 	${CMAKE_SOURCE_DIR}/data/numbers.bmp
+ 	${CMAKE_CURRENT_BINARY_DIR}/numbers.c
+-	DEPENDS numbers.bmp)
++	DEPENDS numbers.bmp ${TOOLS_DIR}/createfont.py)
+ 
+ 
+ add_library(resource ${CMAKE_SOURCE_DIR}/src/resource.h)

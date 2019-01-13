@@ -1,0 +1,21 @@
+diff --git a/itlan/Makefile b/itlan/Makefile
+index 3c5552a..657bba8 100644
+--- a/itlan/Makefile
++++ b/itlan/Makefile
+@@ -3,11 +3,14 @@
+ 
+ all: opcpp opc
+ 
+-opcpp: ut.cpp
++opcpp: ut.cpp operation.h
+ 	g++ ut.cpp -o opcpp
+ 
+-opc:test.o wrapper.o 
++opc: test.o wrapper.o 
+ 	gcc test.o wrapper.o -o opc
+ 
++wrapper.o : wrapper.cpp operation.h
++	g++ -c wrapper.cpp -o wrapper.o
++
+ clean:
+ 	rm -f opcpp opc *.o

@@ -1,0 +1,11 @@
+--- a/SConstruct
++++ b/SConstruct
+@@ -22,6 +22,8 @@ sys.path.insert(1, './support/scons')
+ from build import *
+ from archive import *
+ 
++Decider('timestamp-newer')
++
+ #
+ # Target build
+ #

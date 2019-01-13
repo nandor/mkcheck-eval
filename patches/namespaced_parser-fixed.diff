@@ -1,0 +1,19 @@
+diff --git a/Makefile b/Makefile
+index 3cc05cd..4f74d3d 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1,9 +1,12 @@
+ 
+ namespaced_parser : namespaced_parser.o snazzle_lex.o snazzle_parse.o
+ 
+-snazzle_parse.o : snazzle_lex.h
++snazzle_parse.o : snazzle_lex.h snazzle_parse.h
+ 
+-namespaced_parser.o: snazzle_parse.h snazzle_lex.h
++namespaced_parser.o: snazzle_parse.h snazzle_lex.h snazzle_common.h
++
++snazzle_lex.o: snazzle_common.h snazzle_parse.y snazzle_parse.h
++snazzle_parse.o: snazzle_common.h
+ 
+ %.c %.h : %.l
+ 	flex --outfile=$(basename $<).c --header-file=$(basename $<).h $<

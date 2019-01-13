@@ -1,0 +1,20 @@
+diff --git a/Src/CMakeLists.txt b/Src/CMakeLists.txt
+index 9eff38e..9681d53 100644
+--- a/Src/CMakeLists.txt
++++ b/Src/CMakeLists.txt
+@@ -6,6 +6,7 @@ ADD_CUSTOM_COMMAND(
+             --defines=${CMAKE_SOURCE_DIR}/Include/Parser/Parser.h
+             --output=${BISON_OUTPUT}
+             ${CMAKE_SOURCE_DIR}/Src/Parser/Parser.y
++    DEPENDS ${CMAKE_SOURCE_DIR}/Src/Parser/Parser.y
+     COMMENT "Generating Parser.cpp"
+ )
+ 
+@@ -16,6 +17,7 @@ ADD_CUSTOM_COMMAND(
+     COMMAND ${FLEX_EXECUTABLE}
+           --outfile=${FLEX_OUTPUT}
+           ${CMAKE_SOURCE_DIR}/Src/Lexer/Lexer.l
++    DEPENDS ${CMAKE_SOURCE_DIR}/Src/Lexer/Lexer.l
+     COMMENT "Generating Lexer.cpp"
+ )
+ 

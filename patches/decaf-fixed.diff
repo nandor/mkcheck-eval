@@ -1,0 +1,33 @@
+diff --git a/decaf/CMakeLists.txt b/decaf/CMakeLists.txt
+index fea1f01..7ade1c1 100644
+--- a/decaf/CMakeLists.txt
++++ b/decaf/CMakeLists.txt
+@@ -1,19 +1,21 @@
+-set(FlexOutput lex.cc)
+ if(FLEX_FOUND)
+   add_custom_command(
+-    OUTPUT ${FlexOutput}
+-    COMMAND ${FLEX_EXECUTABLE} -d -o ${FlexOutput} lex.ll)
++    OUTPUT lex.cc
++    COMMAND ${FLEX_EXECUTABLE} -d -o lex.cc lex.ll
++    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/lex.ll)
+ endif()
++set_source_files_properties(lex.cc GENERATED)
++set_source_files_properties(lex.h GENERATED)
+ 
+-set(BisonOutput parse.cc)
+ if(BISON_FOUND)
+   add_custom_command(
+-    OUTPUT ${BisonOutput}
+-    COMMAND ${BISON_EXECUTABLE} -dvty parse.yy -o ${BisonOutput}
+-    DEPENDS ${FlexOutput})
++    OUTPUT parse.cc parse.hh
++    COMMAND ${BISON_EXECUTABLE} -dvty --report-file=/dev/null -o parse.cc parse.yy
++    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/parse.yy)
+ endif()
+ 
+ set_source_files_properties(parse.cc GENERATED)
++set_source_files_properties(parse.h GENERATED)
+ 
+ list(APPEND DECAF_SOURCES
+   utility.cc

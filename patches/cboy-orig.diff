@@ -1,0 +1,18 @@
+--- a/bootrom/Makefile
++++ b/bootrom/Makefile
+@@ -1,5 +1,5 @@
+ AC	= wla-gb
+-AFLAGS	= -o
++AFLAGS	=
+ LD	= wlalink
+ LDFLAGS	= -v
+ 
+@@ -17,7 +17,7 @@ $(BIGROMFILE): $(OFILES) Makefile
+ 	$(LD) $(LDFLAGS) Linkfile $(BIGROMFILE)
+ 
+ bootrom.o: bootrom.s
+-	$(AC) $(AFLAGS) bootrom.s
++	$(AC) $(AFLAGS) -o bootrom.o bootrom.s
+ 
+ $(OFILES): $(IFILES)
+ 

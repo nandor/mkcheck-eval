@@ -1,0 +1,56 @@
+diff --git a/include/ieee802-11/CMakeLists.txt b/include/ieee802-11/CMakeLists.txt
+index 4275ad8..b0c9098 100644
+--- a/include/ieee802-11/CMakeLists.txt
++++ b/include/ieee802-11/CMakeLists.txt
+@@ -46,7 +46,10 @@ macro(expand_h root)
+   #create a command to generate the files
+   add_custom_command(
+     OUTPUT ${expanded_files_h}
+-    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${root}.h.t
++    DEPENDS 
++      ${CMAKE_CURRENT_SOURCE_DIR}/${root}.h.t
++      ${CMAKE_SOURCE_DIR}/python/build_utils.py
++      ${CMAKE_SOURCE_DIR}/python/build_utils_codes.py
+     COMMAND ${PYTHON_EXECUTABLE} ${PYTHON_DASH_B}
+     ${CMAKE_CURRENT_BINARY_DIR}/generate_helper.py
+     ${root} ${root}.h.t ${ARGN}
+diff --git a/lib/CMakeLists.txt b/lib/CMakeLists.txt
+index 09fd869..4c85216 100644
+--- a/lib/CMakeLists.txt
++++ b/lib/CMakeLists.txt
+@@ -53,19 +53,27 @@ macro(expand_cc_h_impl root)
+   #create a command to generate the _impl.cc files
+   add_custom_command(
+     OUTPUT ${expanded_files_cc_impl}
+-    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${root}_impl.cc.t
+-    COMMAND ${PYTHON_EXECUTABLE} ${PYTHON_DASH_B}
+-    ${CMAKE_CURRENT_BINARY_DIR}/generate_helper.py
+-    ${root} ${root}_impl.cc.t ${ARGN}
++    DEPENDS 
++      ${CMAKE_CURRENT_SOURCE_DIR}/${root}_impl.cc.t
++      ${CMAKE_SOURCE_DIR}/python/build_utils.py
++      ${CMAKE_SOURCE_DIR}/python/build_utils_codes.py
++    COMMAND 
++      ${PYTHON_EXECUTABLE} ${PYTHON_DASH_B}
++      ${CMAKE_CURRENT_BINARY_DIR}/generate_helper.py
++      ${root} ${root}_impl.cc.t ${ARGN}
+   )
+ 
+   #create a command to generate the _impl.h files
+   add_custom_command(
+     OUTPUT ${expanded_files_h_impl}
+-    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${root}_impl.h.t
+-    COMMAND ${PYTHON_EXECUTABLE} ${PYTHON_DASH_B}
+-    ${CMAKE_CURRENT_BINARY_DIR}/generate_helper.py
+-    ${root} ${root}_impl.h.t ${ARGN}
++    DEPENDS 
++      ${CMAKE_CURRENT_SOURCE_DIR}/${root}_impl.h.t
++      ${CMAKE_SOURCE_DIR}/python/build_utils.py
++      ${CMAKE_SOURCE_DIR}/python/build_utils_codes.py
++    COMMAND 
++      ${PYTHON_EXECUTABLE} ${PYTHON_DASH_B}
++      ${CMAKE_CURRENT_BINARY_DIR}/generate_helper.py
++      ${root} ${root}_impl.h.t ${ARGN}
+   )
+ 
+   #make _impl.cc source files depend on headers to force generation

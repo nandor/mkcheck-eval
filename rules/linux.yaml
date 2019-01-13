@@ -1,0 +1,16 @@
+filter_in:
+    - .*\.h
+    - .*\.c
+    - .*\.S
+    - .*/.git./*
+    - .*/Kbuild
+    - .*/Kconfig.*
+    - .*/Makefile.*
+    - .*/modules.order
+    - .*/\.git/.*
+filter_tmp:
+    - .*\.o
+filter_out:
+    - .*order.*
+    - .*Kconfig.*
+    

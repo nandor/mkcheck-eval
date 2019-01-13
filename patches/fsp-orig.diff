@@ -1,0 +1,11 @@
+--- a/site_scons/jade.py
++++ b/site_scons/jade.py
+@@ -17,7 +17,7 @@ def checkDSSSLProcessor(check, name="jade"):
+        if "version" in stderr:
+           check.Result(True)
+           return True
+-    except subprocess.CalledProcessError:
++    except:
+        pass
+     check.Result(False)
+     return False
