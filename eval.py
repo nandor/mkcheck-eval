@@ -30,7 +30,7 @@ def run_proc(cmd, cwd=None, default=None):
 
 def build_proc(cmd, cwd, output):
     """Runs a process, piping output to file."""
-    
+
     with open(output, 'a+') as o:
         proc = subprocess.Popen(cmd, stdout=o, stderr=o, cwd=cwd)
         proc.communicate()
@@ -40,7 +40,7 @@ def build_proc(cmd, cwd, output):
     print('Error: ', ' '.join(cmd))
     shutil.move(output, output + '.fail')
     sys.exit(proc.returncode)
-    
+
 
 
 class Src(object):
@@ -48,16 +48,16 @@ class Src(object):
 
 class GitHubSrc(Src):
     """Sources downloaded from GitHub."""
-    
+
     def __init__(self, name, version):
         self._name = name
         self._version = version
- 
+
     def download(self, path):
         """Downloads the specified tag of the git repository."""
-        
+
         url = 'https://github.com/%s.git' % self._name
-        
+
         # Check if hash matches - skip if version is there.
         if os.path.exists(path):
             version = run_proc(['git', 'rev-parse', 'HEAD'], cwd=path, default='')
@@ -65,7 +65,7 @@ class GitHubSrc(Src):
                 return
             shutil.rmtree(path)
         os.makedirs(path)
-        
+
         # Download the specified hash.
         print('Downloading %s' % url)
         run_proc(['git', 'clone', '--recursive', url, path])
@@ -76,10 +76,10 @@ class GitHubSrc(Src):
 
 class HttpSrc(Src):
     """Sources downloaded using http."""
-    
+
     def __init__(self, url):
         self._url = url
-    
+
     def download(self, path):
         if os.path.exists(path):
             version = run_proc(['git', 'rev-parse', 'HEAD'], cwd=path, default='')
@@ -93,27 +93,27 @@ class HttpSrc(Src):
         with tempfile.NamedTemporaryFile() as f:
             run_proc(['wget', self._url, '-O', f.name])
             run_proc(['tar', 'xf', f.name, '-C', path, '--strip-components', '1'])
-        
+
         run_proc(['git', 'init'], cwd=path)
         run_proc(['git', 'add', '-A'], cwd=path)
-        run_proc(['git', 'commit', '-m', '"Initial commit"'], cwd=path) 
+        run_proc(['git', 'commit', '-m', '"Initial commit"'], cwd=path)
 
 class LocalSrc(Src):
     """Local source, copied from a directory. Assumes source is a git repo."""
-    
+
     def __init__(self, path):
         self._path = os.path.expanduser(path)
 
     def download(self, path):
         if os.path.exists(path):
             return
-        
+
         print('Copying %s' % self._path)
         shutil.copytree(self._path, path)
 
 
 class Project(object):
-    """Base class for all project definitions.""" 
+    """Base class for all project definitions."""
 
     def __init__(self, name, fixed, src, dirs, use_hash, args):
         self._name = name
@@ -125,10 +125,10 @@ class Project(object):
 
     def download(self, path):
         self._src.download(path)
-    
+
     def get_name(self):
         return self._name
-    
+
     def get_dirs(self):
         return self._dirs
 
@@ -137,21 +137,21 @@ class Project(object):
 
     def patch(self, path, patch):
         """Applies a patch to the project."""
-        
+
         diff = run_proc(['git', 'status', '--porcelain'], cwd=path, default='')
         if diff: return
         run_proc(['git', 'apply', patch], cwd=path)
-    
+
     def build(self, path, graph, log):
         """Builds the project using GNU Make."""
-        
+
         self._mkcheck(self._get_path(path), graph, log, 'build')
 
     def fuzz(self, path, graph, log):
         """Fuzzes the GNU Make project"""
 
         self._mkcheck(self._get_path(path), graph, log, 'fuzz')
-    
+
     def race(self, path, graph, log):
         """Tests the GNU Make project for races"""
 
@@ -187,7 +187,7 @@ class MakeProject(Project):
 
     def configure(self, path):
         """Nothing to configure for GNU Make."""
-            
+
         if not self._config:
             return
 
@@ -249,7 +249,7 @@ class SConsProject(Project):
 
 
 
-PROJECTS = [ 
+PROJECTS = [
     MakeProject ('linux',             False, HttpSrc('https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.15.tar.xz'), config=['make', 'allnoconfig'], use_hash=True),
     MakeProject ('redis',             False, GitHubSrc('antirez/redis',                    '2717be63922df9775f1ae6f25163afe500646f3d'), args=['MALLOC=libc']),
     MakeProject ('tinycc',            False, HttpSrc('http://download.savannah.gnu.org/releases/tinycc/tcc-0.9.26.tar.bz2'), config=['./configure']),
@@ -263,7 +263,7 @@ PROJECTS = [
     MakeProject ('hindsight-is-8080', False, GitHubSrc('percivalgambit/hindsight-is-8080', '8ad0a77ed2ae9bb33b04592dac74ab09fdd67651')),
     MakeProject ('reon',              False, LocalSrc('~/deps/reon')),
     MakeProject ('apron',             False, GitHubSrc('aziem/apron-orig',                 '685e67bbf265ceb3844197a5caa606b17adfa6e6'), config=['./configure', '--no-ocaml', '-no-cxx', '-no-java', '--no-ppl']),
-    
+
     CMakeProject('mysql-server',      False, HttpSrc('https://github.com/mysql/mysql-server/archive/mysql-5.5.62.tar.gz'), False),
     CMakeProject('anbox',             False, GitHubSrc('anbox/anbox',                      'ac2ccb47fb183364588298c426baccb9f05c7531'), False),
     CMakeProject('pifox',             False, GitHubSrc('icteam28/pifox',                   '4ae6f73c491347688dadf4bb823015a44d338be3'), False, config=['-DCMAKE_ASM_COMPILER=arm-none-eabi-gcc']),
@@ -278,7 +278,7 @@ PROJECTS = [
     CMakeProject('Pixslam',           True,  GitHubSrc('lukedodd/Pixslam',                 '296f289e433eb3319821611702fb60b245a192a7'), True),
     CMakeProject('tetris',            True,  GitHubSrc('leidav/tetris',                    '144b9cf3b888d5b6bf21ff81432f5a7ef092323d'), False),
     CMakeProject('libcalrom',         True,  GitHubSrc('calendarium-romanum/libcalrom',    '799ee13dbb3ffa08f15bd65dca7b492f7bb84ec9'), True),
-    
+
     SConsProject('FreeNOS',           False, GitHubSrc('nieklinnenbank/FreeNOS',           '7a17783e7ed176676cdb113015add0719e03ff41')),
     SConsProject('baresifter',        False, GitHubSrc('blitz/baresifter',                 'c247bd6b7b537e3c747d25cf4124c05b4ff70455'), config=['git', 'describe', '--always', '--dirty']),
     SConsProject('steppinrazor',      False, GitHubSrc('profmaad/steppinrazor',            '92155167cda3c13062aa3189aa46005a4afa09c3')),
@@ -312,24 +312,24 @@ def count_results(path):
 
 def has_races(path):
     """Checks if a result file has races."""
-    
+
     with open(path, 'r') as f:
         return len(f.readlines()) > 2
 
 
 def test_project(proj, kind):
     """Fully tests a version of a project."""
-    
+
     # Set up the files required by the build.
     base_path = os.path.join('tmp/src-%s' % kind, proj.get_name())
     patch = os.path.abspath('patches/%s-%s.diff' % (proj.get_name(), kind))
     log_path = os.path.abspath('tmp/output/%s' % proj.get_name())
     if not os.path.exists(log_path): os.makedirs(log_path)
-    
+
     # Get the source code and optionally patch it.
     proj.download(base_path)
     if os.path.exists(patch): proj.patch(base_path, patch)
-    
+
     # Build and run each subfolder.
     tnf = 0
     tm = 0
@@ -344,7 +344,7 @@ def test_project(proj, kind):
         fuzz_path = os.path.join(log_path, 'fuzz-%s%s.log' % (kind, suffix))
         race_path = os.path.join(log_path, 'race-%s%s.log' % (kind, suffix))
         build_path = os.path.join(log_path, 'build-%s%s.log' % (kind, suffix))
-        
+
         # Configure the project, if required.
         proj.configure(path)
 
@@ -352,7 +352,7 @@ def test_project(proj, kind):
         proj.build(path, graph_path, build_path)
         proj.fuzz(path, graph_path, fuzz_path)
         proj.race(path, graph_path, race_path)
-    
+
         # count the results.
         nf, m, p = count_results(fuzz_path)
         tnf += nf
@@ -369,10 +369,10 @@ if __name__ == '__main__':
         if len(sys.argv) > 1 and proj.get_name() not in sys.argv:
             continue
         nf, m, p, races = test_project(proj, 'orig')
-        if proj.is_fixed() and False: 
-            _, fm, fp, fraces= test_project(proj, 'fixed')
+        if proj.is_fixed():
+            _, fm, fp, fraces = test_project(proj, 'fixed')
             fixed = fm == 0 and fp == 0 and not fraces
         else:
             fixed = False
         print('%s %3d %3d %3d %5s %5s' % (proj.get_name().ljust(20), nf, m, p, races, fixed))
-        
+
