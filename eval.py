@@ -70,6 +70,7 @@ class GitHubSrc(Src):
         print('Downloading %s' % url)
         run_proc(['git', 'clone', '--recursive', url, path])
         run_proc(['git', 'reset', '--hard', self._version], cwd=path)
+        run_proc(['git', 'submodule', 'update', '--recursive'], cwd=path)
 
     def patch(self, path, patch):
         """Patches the project with a file."""
