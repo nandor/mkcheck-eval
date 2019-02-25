@@ -138,7 +138,12 @@ class Project(object):
     def patch(self, path, patch):
         """Applies a patch to the project."""
 
-        diff = run_proc(['git', 'status', '--porcelain'], cwd=path, default='')
+        diff = run_proc([
+            'git',
+            'status',
+            '--porcelain',
+            '--ignore-submodules=all'
+        ], cwd=path, default='')
         if diff: return
         run_proc(['git', 'apply', patch], cwd=path)
 
